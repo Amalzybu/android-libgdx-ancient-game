@@ -1,0 +1,188 @@
+package com.dravianart.game.entities;
+
+import java.util.Vector;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
+
+import tools.Crect;
+import tools.Gravity;
+
+public class MovBlock {
+	public int i=0, pi=-1,pause=0;
+	public boolean b=false,hide;
+	public boolean nx;
+	public boolean ny;
+	public float[] points;
+	public float x,y,stateTime=0,h=0,oy=0,fy=0,ox=0,fx,speed;
+	public Animation blk;
+	public Crect r;
+	
+	Vector<Gravity> t;
+	public MovBlock(float x,float y,Texture bk,Vector<Gravity> t,boolean b,boolean hide,float speed,int pause,float... j)
+	{
+		this.hide=hide;
+		this.pause=pause;
+		this.speed=speed;
+		points=j;
+		oy=y;
+		ox=x;
+		this.b=b;
+		r=new Crect(x+3,y+3,49*2,10*2);
+		this.x=x;
+		this.y=y;
+		blk= new Animation(0.1f, new Array<TextureRegion>(TextureRegion.split(bk, 50, 30)[0]),PlayMode.LOOP);
+		this.t=t;
+	}
+	public void render(SpriteBatch batch,float delta)
+	{
+		
+		stateTime+=delta;
+		if(pause==1)
+		{
+		if(i!=pi)
+		{
+			if(b) {
+				fx=x+points[i];
+				if(points[i]<0) {
+					nx=true;
+				}
+				else
+				{
+					nx=false;
+				}
+			}
+			else {
+				fy=y+points[i];
+				if(points[i]<0) {
+					ny=true;
+				}
+				else
+				{
+					ny=false;
+				}
+			}
+			pi=i;
+			System.out.println("index "+i+" boolean "+b);
+		}
+		if(b) {
+			if(!nx)
+			{
+			if(x<fx)
+			{
+			//	System.out.println("increasing"+i);
+				x+=speed*delta;
+				update();
+				for(Gravity p:t)
+				{
+				if(r.upHcollid(p.r))
+				{
+					p.x+=speed*delta;
+					
+					
+				}
+				}
+			}
+			else if(x>=fx||points[i]==0)
+			{
+				b=false;
+				i++;
+			}
+			}
+			else
+			{
+			if(x>fx&&nx)
+			{
+				//System.out.println("decreasing");
+				x-=speed*delta;
+				update();
+				for(Gravity p:t)
+				{
+				if(r.upHcollid(p.r))
+				{
+					p.x-=speed*delta;
+					
+				}
+				}
+			}
+			else if(x<=fx||points[i]==0)
+			{
+				b=false;
+				i++;
+				
+			}
+			}
+			if(i>=points.length) {i=0;}
+			
+		}
+		else {
+			if(!ny)
+			{
+			if(y<fy)
+			{
+				y+=speed*delta;
+				update();
+				for(Gravity p:t)
+				{
+				if(r.upHcollid(p.r))
+				{
+					p.y+=speed*delta;
+					
+				}
+				}
+			}
+			else if(y>=fy||points[i]==0)
+			{
+				b=true;
+				i++;
+			}
+			}
+			else
+			{
+			if(y>fy)
+			{
+				y-=speed*delta;
+				update();
+				for(Gravity p:t)
+				{
+				if(r.upHcollid(p.r))
+				{
+					p.y-=speed*delta;
+					
+				}
+				}
+			}
+			else if(y<=fy||points[i]==0)
+			{
+				b=true;
+				i++;
+				
+			}
+			
+			}
+			if(i==points.length) {i=0;}
+		}
+			
+		}
+		if(!hide)
+		{
+		batch.draw((TextureRegion) blk.getKeyFrame(stateTime), x, y, 50*3, 30*3);
+		}
+		
+		
+			
+		
+		
+		
+	}
+	public void update()
+	{
+		r.move(x, y);
+	}
+	
+
+}

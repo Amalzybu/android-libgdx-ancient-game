@@ -1,0 +1,64 @@
+package com.dravianart.game.entities;
+
+import java.util.ArrayList;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
+import com.badlogic.gdx.utils.Array;
+import com.dravianart.game.Ancient;
+
+import tools.Crect;
+
+public class River {
+	float x,y;
+	Floor k;
+	float stateTime=0;
+	Ancient game;
+	public ArrayList<Floor> f;
+	public River(float x,float y,Ancient game) {
+		this.x=x;
+		this.y=y;
+		this.game=game;
+		f=new ArrayList<Floor>();
+		f.add(new Floor(x,y,(Texture)game.manager.get("AbyssText/river.png")) {
+			public void resetspd()
+			{
+			flr=new Animation(0.1f, new Array<TextureRegion>(TextureRegion.split(t, 240, 50)[0]),PlayMode.LOOP);
+			}
+		});
+		f.add(new Floor(x+240*4,y,(Texture)game.manager.get("AbyssText/extendedriver.png")){
+			public void resetspd()
+			{
+			flr=new Animation(0.1f, new Array<TextureRegion>(TextureRegion.split(t, 240, 50)[0]),PlayMode.LOOP);
+			}
+		});
+		f.add(new Floor(x+480*4,y,(Texture)game.manager.get("AbyssText/extendedriver.png")){
+			public void resetspd()
+			{
+			flr=new Animation(0.1f, new Array<TextureRegion>(TextureRegion.split(t, 240, 50)[0]),PlayMode.LOOP);
+			}
+		});
+		
+		
+	}
+	public void render()
+	{
+		stateTime+=Gdx.graphics.getDeltaTime();
+		for(Floor a:f)
+		{
+			game.batch.draw((TextureRegion) a.flr.getKeyFrame(stateTime), a.x, a.y,a.width*4,a.height*4);
+		}
+	}
+	public void update() {
+		for(Floor a:f)
+		{
+			a.update();
+		}
+	}
+	
+	
+
+}

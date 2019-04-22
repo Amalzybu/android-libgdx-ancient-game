@@ -1,0 +1,36 @@
+package com.dravianart.game.entities;
+
+import java.util.ArrayList;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.dravianart.game.Ancient;
+
+import tools.Crect;
+
+public class River {
+	Floor k;
+	float stateTime=0;
+	Ancient game;
+	public ArrayList<Floor> f;
+	public River(float x,float y,Ancient game) {
+		this.game=game;
+		f=new ArrayList<Floor>();
+		f.add(new Floor(x,y,(Texture)game.manager.get("river.png")));
+		f.add(new Floor(x+240*4,y,(Texture)game.manager.get("extendedriver.png")));
+		f.add(new Floor(x+480*4,y,(Texture)game.manager.get("extendedriver.png")));
+		
+		
+	}
+	public render()
+	{
+		stateTime+=Gdx.graphics.getDeltaTime();
+		for(Floor a:f)
+		{
+			game.batch.draw(a.flr.getKeyFrame(), x, y);
+		}
+	}
+	
+	
+
+}

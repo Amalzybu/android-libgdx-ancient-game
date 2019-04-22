@@ -1,0 +1,5 @@
+package com.dravianart.game.entities;
+
+public class River {
+
+}

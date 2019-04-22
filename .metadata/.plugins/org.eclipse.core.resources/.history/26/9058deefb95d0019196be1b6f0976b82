@@ -1,0 +1,24 @@
+package com.dravianart.game.entities;
+
+import java.util.ArrayList;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.dravianart.game.Ancient;
+
+import tools.Crect;
+
+public class River {
+	Floor k;
+	public ArrayList<Floor> f;
+	public River(float x,float y,Ancient game) {
+		
+		f=new ArrayList<Floor>();
+		f.add(new Floor(x,y,(Texture)game.manager.get("river.png")));
+		f.add(new Floor(x+240*4,y,(Texture)game.manager.get("river.png")));
+		f.add(new Floor(x+480*4,y,(Texture)game.manager.get("river.png")));
+		
+	}
+	
+	
+
+}

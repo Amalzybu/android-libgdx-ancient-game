@@ -1,0 +1,11 @@
+package com.dravianart.game.entities;
+
+import tools.Crect;
+
+public class River {
+	
+	public ArrayList<Floor> f;
+	
+	
+
+}

@@ -1,0 +1,18 @@
+package com.dravianart.game.entities;
+
+import java.util.ArrayList;
+
+import tools.Crect;
+
+public class River {
+	Floor k;
+	public ArrayList<Floor> f;
+	public River() {
+		k=new Floor(140,50,new Texture("t")) {
+			
+		}
+	}
+	
+	
+
+}
