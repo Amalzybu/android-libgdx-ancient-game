@@ -69,7 +69,7 @@ public class Gravity {
 			}
 		}
 		}
-		else
+		else if(a==1)
 		{
 			for(Crect g:gr)
 			{

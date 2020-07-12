@@ -46,15 +46,26 @@ public class Ancient extends Game {
 	@Override
 	public void create () {
 		prefs = Gdx.app.getPreferences("pref");
+		
 		//temp
-		/*prefs.putString("lvl", "StageOne");
+//		prefs.putString("lvl", "StageLight");
+//		prefs.putString("tex", "levellightText");
+//		prefs.putString("msc", "levelThreeMsc");
+//		prefs.flush();
+//		prefs.putString("lvl", "StageThree");
+//		prefs.putString("tex", "levelThreeText");
+//		prefs.putString("msc", "levelThreeMsc");
+//		prefs.putString("tmx", "mycrappymap.tmx");
+//		prefs.flush();
+		prefs.putString("lvl", "StageOne");
 		prefs.putString("tex", "leveloneText");
 		prefs.putString("msc", "leveloneMsc");
-		prefs.flush();*/
-		prefs.putString("lvl", "AbyssPath");
-		prefs.putString("tex", "AbyssText");
-		prefs.putString("msc", "AbyssMsc");
-		prefs.flush();
+		prefs.putString("tmx", "");
+//		prefs.flush();
+//		prefs.putString("lvl", "AbyssPath");
+//		prefs.putString("tex", "AbyssText");
+//		prefs.putString("msc", "AbyssMsc");
+//		prefs.flush();
 		//temp
 		System.out.println("pref"+(s=prefs.getString("tex")));
 		if(s.equals(""))
@@ -63,6 +74,7 @@ public class Ancient extends Game {
 			prefs.putString("lvl", "StageOne");
 			prefs.putString("tex", "leveloneText");
 			prefs.putString("msc", "leveloneMsc");
+			prefs.putString("tmx", "");
 			prefs.flush();
 			System.out.println("pref "+prefs.getString("msc"));
 		}

@@ -41,7 +41,7 @@ public class DiengTree {
 		rolls[0] = new Animation(0.2f,  new Array<TextureRegion>(rollSpriteSheet[0]),PlayMode.LOOP);
 		rolls[1] = new Animation(0.3f, new Array<TextureRegion>(rollSpriteSheet[1]));
 		rolls[2] = new Animation(0.3f, new Array<TextureRegion>(rollSpriteSheet[2]));
-		rolls[3] = new Animation(0.5f, new Array<TextureRegion>(TextureRegion.split(det, 300, 220)[0]));
+		rolls[3] = new Animation(0.25f, new Array<TextureRegion>(TextureRegion.split(det, 300, 220)[0]));
 
 	}
 	public boolean render (float delta)

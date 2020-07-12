@@ -14,7 +14,7 @@ public class Block {
 	public Crect r;
 	public Block(float x,float y,Texture bk)
 	{
-		r=new Crect(x+3,y+3,49*2,10*2);
+		r=new Crect(x,y+3,50*3,10*3);
 		this.x=x;
 		this.y=y;
 		blk= new Animation(0.1f, new Array<TextureRegion>(TextureRegion.split(bk, 50, 30)[0]),PlayMode.LOOP);

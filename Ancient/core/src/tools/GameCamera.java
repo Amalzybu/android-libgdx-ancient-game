@@ -34,4 +34,8 @@ public class GameCamera {
 		Vector3 unproject=camera.unproject(inputScreen);
 		return new Vector2(unproject.x,unproject.y);
 	}
+	public OrthographicCamera getCam()
+	{
+		return camera;
+	}
 }

@@ -21,12 +21,14 @@ public class Npc1 {
 	boolean flg=true;
 	SpriteBatch batch=null;
 	Texture npc;
+	Tree t;
 	String[] str={"hey....." ,"how could you"," get here ?","this is my pond idiot","get out from here",".........."};
-	public Npc1(float x,float y,SpriteBatch batch,Texture np)
+	public Npc1(float x,float y,SpriteBatch batch,Texture np,Tree tx)
 	{
+		this.t=tx;
 		npc=np;
 		this.batch=batch;
-		ch=new Chat(str,batch,50,500,8,0.4f);
+		ch=new Chat(str,batch,x+50,500,8,0.4f);
 		this.x=x;
 		this.y=y;
 		r=new Crect(x,y,150,150);
@@ -41,13 +43,13 @@ public class Npc1 {
 	public boolean render (float delta)
 	{
 		stateTime+=delta;
-		if(x>-180)
+		if(t.x<x+100)
 		{
 		batch.draw((TextureRegion) rolls[1].getKeyFrame(stateTime), x, y, 150*4, 150*4);
 		b=true;
 		}
 		
-		else if(x<-180)
+		else if(t.x>x+100)
 		{
 			if(flg)
 			{

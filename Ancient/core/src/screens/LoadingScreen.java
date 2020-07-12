@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.dravianart.game.Ancient;
 
 import tools.AssetFinder;
+import tools.TmxLoad;
 
 public class LoadingScreen implements Screen{
 	Ancient game;
@@ -27,6 +28,7 @@ public class LoadingScreen implements Screen{
 	AssetFinder finder;
 	Map<String,String> mp;
 	Screen s;
+	TmxLoad tle;
 	public LoadingScreen(Ancient game)
 	{
 		this.game=game;
@@ -40,12 +42,23 @@ public class LoadingScreen implements Screen{
 		System.out.println(game.prefs.getString("tex"));
 		finder.loadText(game.prefs.getString("tex"));
 		finder.loadMsc(game.prefs.getString("msc"));
+		
+			
+		
 		anm=new Animation[2];
 		
 		
 		ld=game.manager.get("loading.png",Texture.class);
 		anm[0]=new Animation(0.05f,new Array<TextureRegion>(TextureRegion.split(ld, 120, 180)[0]));
 		anm[1]=new Animation(0.05f,new Array<TextureRegion>(TextureRegion.split(ld, 120, 180)[1]));
+		if(!game.prefs.getString("tmx").equals(""))
+		{
+		tle=new TmxLoad(game,game.prefs.getString("tmx"));
+		//System.out.println("inside   "+game.prefs.getString("tmx"));
+		tle.load();
+		game.manager.finishLoading();
+		}
+		
 	}
 
 	@Override
@@ -98,6 +111,16 @@ public class LoadingScreen implements Screen{
 			else if(game.prefs.getString("lvl").equals("AbyssPath"))
 			{
 			game.setScreen(new AbyssPath(game));
+			}
+			else if(game.prefs.getString("lvl").equals("StageThree"))
+			{
+				
+			game.setScreen(new StageThree(game));
+			}
+			else if(game.prefs.getString("lvl").equals("StageLight"))
+			{
+				
+			game.setScreen(new StageLight(game));
 			}
 		}
 		

@@ -41,7 +41,8 @@ public class Tree extends Gravity{
 		tre=tr;
 		life=5;
 		y=500;
-		r=new Crect(x+(6*7),y+(3*7),8*7,15*7);
+		//r=new Crect(x+(6*7),y+(3*7),8*7,15*7);
+		r=new Crect(x+(10*7),y+(5*7),8*7,13*7);
 		rolls=new Animation[7];
 		TextureRegion[][] rollSpriteSheet = TextureRegion.split(tre, 20, 20);
 		rolls[0] = new Animation(0.3f, new Array<TextureRegion>(rollSpriteSheet[0]),PlayMode.LOOP);
@@ -61,7 +62,7 @@ public class Tree extends Gravity{
 		{
 			spcount=0;
 		}
-		r.move(x, y);
+		r.move(x+(6*7), y+(3*7));
 	}
 	public void dispose()
 	{

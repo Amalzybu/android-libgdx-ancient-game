@@ -1,5 +1,4 @@
 package com.dravianart.game.desktop;
-
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.dravianart.game.Ancient;
@@ -11,7 +10,6 @@ public class DesktopLauncher {
 		config.width=Ancient.WIDTH;
 		config.height=Ancient.HEIGHT;
 		new LwjglApplication(new Ancient(), config);	
-		
 	}
 }
   

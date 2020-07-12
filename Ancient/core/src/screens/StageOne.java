@@ -55,9 +55,9 @@ public class StageOne implements Screen{
 	Texture arsmbt;
 	Texture amainbt;
 	Music snd;
-	static boolean jump=false,fjmp=false,focus=false,freefl=false,ljmp=false,sprint=false,fs=false,bs=false,s=false,ankey=true,cineFocus=false,sprintcontrl=true;
+	public static boolean jump=false,fjmp=false,focus=false,freefl=false,ljmp=false,sprint=false,fs=false,bs=false,s=false,ankey=true,cineFocus=false,sprintcontrl=true;
 	Ancient game;
-	Tree t;
+	public Tree t;
 	
 	//ArrayList<Gravity> grav=new ArrayList<Gravity>();
 	Crect teb=null; 
@@ -69,11 +69,12 @@ public class StageOne implements Screen{
 	Npc1 np=null;
 	Examp end;
 	Animation anm=null;
+	Texture cre;
 	int w=0;
 	float temp=0,val=0,valy=0,val1=0,valy1=0,oldAlpha1=0 ;
 	float[] cv= { 240,0,-50,450};
 	float[] hg= {150,300,500,250};
-	float stateTime=0,stateTime1=0,stateTimep=0;
+	public float stateTime=0,stateTime1=0,stateTimep=0;
 	Floor[] f;
 	Pond p;
 	Color color1;
@@ -97,6 +98,7 @@ public class StageOne implements Screen{
 		 mainbt=game.manager.get("mainmenu.png");
 		 arsmbt=game.manager.get("activeresume.png");
 		 amainbt=game.manager.get("activemainmenu.png");
+		 cre=game.manager.get("leveloneText/crect.png");
 		ex= new Examp[]{new Examp(-280,60,50,50,(Texture)game.manager.get("leveloneText/stones12.png"),10,-50,0,false),new Examp(1100,65,250,110,(Texture)game.manager.get("leveloneText/hight.png"),4,-50,0,false),new Examp(5432,-212,512,91,(Texture)game.manager.get("leveloneText/flrbase.png"),4,-50,0,false)};
 		f= new Floor[]{new Floor(0,0,floor),new Floor(900,0,floor),new Floor(1100,400,floor),new Floor(1860,0,floor),new Floor(2820,0,floor),new Floor(5500,50,floor),new Floor(6400,50,floor)};
 		b= new Block[]{new Block(700,350,block),new Block(900,450,block),new Block(500,200,block),new Block(3000,250,block),new Block(3600,200,block),new Block(3800,300,block),new Block(4000,400,block),new Block(4100,500,block),new Block(4200,600,block),new Block(4400,715,block),new Block(4600,600,block),new Block(4800,400,block),new Block(5080,350,block),new Block(5360,300,block),new Block(5460,200,block)};
@@ -108,7 +110,7 @@ public class StageOne implements Screen{
 		//limit=new Crect()
 		anm=new Animation(0.05f,new Array<TextureRegion>(TextureRegion.split((Texture)game.manager.get("Sprintfog.png"), 350, 65)[0]));
 		
-		np=new Npc1(3200,0,game.batch,(Texture)game.manager.get("leveloneText/npc1sleep.png"));
+		
 		
 		blocker=new Vector<Crect>();
 		gr=new Vector<Crect>();
@@ -258,7 +260,7 @@ public class StageOne implements Screen{
 		t=new Tree((Texture)game.manager.get("action.png"));
 		EnemyOne[] array= {new EnemyOne(6100,500,(Texture)game.manager.get("leveloneText/enemy1.png"),game.batch,t,true,1.5f),new EnemyOne(400,500,(Texture)game.manager.get("leveloneText/enemy1.png"),game.batch,t,false,1.5f)};
 		enemiesOnecl = new ArrayList<EnemyOne>(Arrays.asList(array));
-		
+		np=new Npc1(3200,0,game.batch,(Texture)game.manager.get("leveloneText/npc1sleep.png"),t);
 		
 		//blocker.add(stone.r);
 		for(Examp e:ex)
@@ -381,6 +383,7 @@ public class StageOne implements Screen{
 		game.batch.draw((TextureRegion) s.blk.getKeyFrame(stateTime), s.x, s.y, 50*3, 30*3);
 		}
 		ankey=np.render( delta);
+		//game.batch.draw(cre, np.x, np.y,np.r.width,np.r.height);
 		if(np.ct)
 		{
 			blocker.remove(teb);
@@ -391,7 +394,7 @@ public class StageOne implements Screen{
 		{
 			if(!p.stamp[1].isAnimationFinished(p.stateTime1))
 			{
-			changeFocus(p.r, 650, delta, 700);
+			changeFocus(p.r, 840, delta, 700);
 			}
 			else
 			{
@@ -566,9 +569,10 @@ public class StageOne implements Screen{
 		else
 		{
 			
-		if(Gdx.input.isTouched()&&game.camera.getInputGameWorld().x>(game.WIDTH/2)&&!freefl&&t.block( blocker,0)&&ankey&&!t.painjmp)
+		if(Gdx.input.isTouched()&&game.camera.getInputGameWorld().x-game.camera.getCam().position.x+200>(game.WIDTH/2)&&!freefl&&t.block( blocker,0)&&ankey&&!t.painjmp)
 		{
 			
+//			System.out.println("camer "+game.camera.getCam().position.x);
 			t.pos=0;
 			if(t.r.isCollided(p.r))
 			{
@@ -580,7 +584,7 @@ public class StageOne implements Screen{
 			}
 		move(-200,delta);
 		}
-		else if(Gdx.input.isTouched()&&game.camera.getInputGameWorld().x<(game.WIDTH/2)&&!freefl&&t.block( blocker,1)&&ankey&&!t.painjmp)
+		else if(Gdx.input.isTouched()&&game.camera.getInputGameWorld().x-game.camera.getCam().position.x+200<(game.WIDTH/2)&&!freefl&&t.block( blocker,1)&&ankey&&!t.painjmp)
 		{
 			t.pos=1;
 			if(t.r.isCollided(p.r))
@@ -692,6 +696,7 @@ public class StageOne implements Screen{
 		}
 		for(EnemyOne e:enemiesOnecl)
 		{
+			game.batch.draw(cre, e.r.x, e.r.y, e.r.width, e.r.height );
 		e.render(delta,blocker);
 		}
 		del.deleteEnemy(enemiesOnecl,null);
@@ -732,20 +737,33 @@ public class StageOne implements Screen{
 			game.batch.draw(life, 0+(l*30), 690,20,20);
 		}
 		game.batch.end();
+		if(t.y<-50)
+		{
+			game.prefs.putString("lvl", "AbyssPath");
+			game.prefs.putString("tex", "AbyssText");
+			game.prefs.putString("msc", "AbyssMsc");
+			game.prefs.flush();
+			game.lod=new LoadingScreen(game);
+			snd.stop();
+			snd.dispose();
+			game.camera.getCam().position.x=240.0f;
+			game.camera.getCam().update();
+			game.setScreen(game.lod);
+		}
 		if(ent.isCollided(t.r))
 		{
 			game.setScreen(new TestScreen(game));
 		}
-		if(Math.round(t.x)!=200&&focus)
+		if(Math.round(t.x)!=game.camera.getCam().position.x-100&&focus)
 		{
 			
-			if(t.x>200)
+			if(t.x>game.camera.getCam().position.x-100)
 			{
 				move(-700,delta);
 				
 				t.x-=delta*700;
 				t.update();
-				if(Math.round(t.x)<=200)
+				if(Math.round(t.x)<=game.camera.getCam().position.x-100)
 				{
 					//System.out.println("reset");
 					focus=false;
@@ -754,13 +772,13 @@ public class StageOne implements Screen{
 
 				
 			}
-			else if(t.x<200)
+			else if(t.x<game.camera.getCam().position.x-100)
 			{
 				move(700,delta);
 			
 				t.x+=delta*700;
 				t.update();
-				if(Math.round(t.x)>=200)
+				if(Math.round(t.x)>=game.camera.getCam().position.x-100)
 				{
 					//System.out.println("reset");
 					focus=false;
@@ -779,13 +797,14 @@ public class StageOne implements Screen{
 				    	stateTimep+=delta;
 				    	//Gdx.gl.glClearColor(0f,0f, 0f, 1);
 						//Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
+				    	float camex=game.camera.getCam().position.x-240,camey=game.camera.getCam().position.y-360;
 						game.batch.enableBlending();
 						game.batch.begin();
 						
-						game.batch.draw(pause, 0, 0, 480, 720);
-						if((game.camera.getInputGameWorld().x>150&&game.camera.getInputGameWorld().x<330)&&(game.camera.getInputGameWorld().y<220&&game.camera.getInputGameWorld().y>175))
+						game.batch.draw(pause, game.camera.getCam().position.x-240, game.camera.getCam().position.y-360, 480, 720);
+						if((game.camera.getInputGameWorld().x>camex+150&&game.camera.getInputGameWorld().x<camex+330)&&(game.camera.getInputGameWorld().y<camey+220&&game.camera.getInputGameWorld().y>camey+175))
 						{
-							game.batch.draw(arsmbt, 150, 500, 60*3, 15*3);
+							game.batch.draw(arsmbt, camex+150, camey+500, 60*3, 15*3);
 							 if(Gdx.input.isTouched())
 							 {
 								 ankey=true;
@@ -794,15 +813,17 @@ public class StageOne implements Screen{
 						}
 						else
 						{
-							game.batch.draw(rsmbt, 150, 500, 60*3, 15*3);
+							game.batch.draw(rsmbt, camex+150, camey+500, 60*3, 15*3);
 						}
-						 if((game.camera.getInputGameWorld().x>120&&game.camera.getInputGameWorld().x<360)&&(game.camera.getInputGameWorld().y<320&&game.camera.getInputGameWorld().y>275))
+						 if((game.camera.getInputGameWorld().x>camex+120&&game.camera.getInputGameWorld().x<camex+360)&&(game.camera.getInputGameWorld().y<camey+320&&game.camera.getInputGameWorld().y>camey+275))
 						{
-							 game.batch.draw(amainbt, 120, 400, 80*3, 15*3);
+							 game.batch.draw(amainbt, camex+120, camey+400, 80*3, 15*3);
 							 if(Gdx.input.isTouched())
 							 {
 								 this.dispose();
 								 game.m.stateTime=0;
+								 game.camera.getCam().position.set(game.camera.getCam().viewportWidth/2,game.camera.getCam().viewportHeight/2,0);
+								 game.camera.getCam().update();
 								 game.setScreen(game.m);
 								 
 								 
@@ -811,7 +832,7 @@ public class StageOne implements Screen{
 						}
 						 else
 						 {
-							 game.batch.draw(mainbt, 120, 400, 80*3, 15*3);
+							 game.batch.draw(mainbt, camex+120, camey+400, 80*3, 15*3);
 						 }
 						
 						 game.batch.end();
@@ -866,6 +887,8 @@ public class StageOne implements Screen{
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+		System.out.println("came x="+game.camera.getCam().position.x);
+		
 		game.manager.unload("leveloneText/fish.png");
 		game.manager.unload("leveloneText/flrbase.png");
 		game.manager.unload("leveloneText/cave.png");
@@ -878,6 +901,8 @@ public class StageOne implements Screen{
 		game.manager.unload("leveloneText/water.png");
 		game.manager.unload("leveloneText/watermod.png");
 		game.manager.unload("leveloneText/wf.png");
+		snd.stop();
+		snd.dispose();
 		//game.manager.finishLoading();
 		/*np.dispose();
 		p.dispose();
@@ -901,49 +926,20 @@ public class StageOne implements Screen{
 	}
 	public void move(float sp,float delta )
 	{
-		//System.out.println("mov");
-		
-		for(Floor k:f)
-		{
-		k.x+=delta*sp;
-		k.update();
+		t.x-=delta*sp;
+	
+		game.camera.getCam().translate(-delta*sp, 0);
+		game.camera.getCam().update();
+		for(int i=0;i<cv.length;i++) {
+		cv[i]+=-(delta*sp);
 		}
-		for(Block s:b)
-		{
+		bg.x+=-(delta*sp);
 
-		s.x+=delta*sp;
-		s.update();
-		}
-		for(Examp e:ex)
-		{
-		e.x+=delta*sp;
-		e.update();
-		}
-		bg.x+=delta*sp/20;
-		np.x+=delta*sp;
-		p.x+=delta*sp;
-		for(EnemyOne e:enemiesOnecl)
-		{
-		e.x+=delta*sp;
-		e.px+=delta*sp;
-		e.update();
-		}
-		end.x+=delta*sp;
-		end.update();
-		
-		p.update();
-		for(int j=0;j<=3;j++)
-		{
-			cv[j]+=delta*sp/10;
-			
-		}
-		teb.x+=delta*sp;
-		ent.x+=delta*sp;
 		
 	}
 	public boolean changeFocus(Crect r,float x,float delta,float sp)
 	{
-		if(r.x+x>=0)
+		if(game.camera.getCam().position.x<=r.x+x)
 		{
 			cineFocus=true;
 			t.x-=delta*sp;

@@ -39,7 +39,7 @@ public class EnemyOne extends Gravity{
 		this.tr=t;
 		pos=1;
 		px=x;
-		r=new Crect(x,y+20,20f,100f);
+		r=new Crect(x+10,y+30,20f,80f);
 		this.batch=batch;
 		rollSpriteSheet = TextureRegion.split(t1, 50, 100);
 		this.x=x;
@@ -182,7 +182,7 @@ public class EnemyOne extends Gravity{
 		ll=px-200;
 		rl=px+200;
 		
-		r.move(x, y);
+		r.move(x+15, y+20);
 	}
 	public void noPainMang()
 	{
