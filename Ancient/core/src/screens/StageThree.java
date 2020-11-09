@@ -36,9 +36,13 @@ import com.badlogic.gdx.utils.Array;
 import com.dravianart.game.Ancient;
 import com.dravianart.game.entities.FBDesiderObject;
 import com.dravianart.game.entities.FlowerData;
+import com.dravianart.game.entities.LotusData;
 import com.dravianart.game.entities.OrthoEnemyOne;
 import com.dravianart.game.entities.OrthoTree;
+import com.dravianart.game.entities.SmallFireSpirit;
+import com.dravianart.game.entities.StoneWall;
 
+import tools.Crect;
 import tools.FrontBehindDesider;
 import tools.OrthogonalTiledMapRendererWithSprites;
 import tools.State;
@@ -57,6 +61,9 @@ public class StageThree implements Screen{
 	Texture arsmbt;
 	Texture amainbt;
 	Texture tcret;
+	Texture fathertree;
+	Texture stone;
+	Texture spirit,nexthole;
 	 TextureRegion textureRegion;
 	 TiledMapTileSet tileset;
 	 OrthogonalTiledMapRenderer renderer;
@@ -72,9 +79,13 @@ public class StageThree implements Screen{
 	OrthoTree player;
 	Vector<OrthoEnemyOne> enemy_array;
 	private Object enemyOneText;
+	
+	Crect boss1;
 	private Object trainfire;	
-	private Texture windflower;
+	private Texture windflower,lotus;
 	FrontBehindDesider Fbdes;
+	StoneWall stonedate;
+	SmallFireSpirit spiritObject;
 public StageThree(final Ancient game)
 {
 	
@@ -91,23 +102,38 @@ public StageThree(final Ancient game)
 	enemyOneText=game.manager.get("levelThreeText/orthogonalvillain.png");
 	trainfire=game.manager.get("levelThreeText/trainfire.png");
 	windflower=game.manager.get("levelThreeText/windflower.png");
-
+	lotus=game.manager.get("levelThreeText/lotusanimated.png");
+	fathertree=game.manager.get("levelThreeText/fathertree.png");
+	stone=game.manager.get("levelThreeText/stoneWallAniamtion.png");
+	spirit=game.manager.get("levelThreeText/firespritsoul.png");
+	nexthole=game.manager.get("levelThreeText/nexthole.png");
 	enemy_array=new Vector<OrthoEnemyOne>();	
-	enemy_array.add(new OrthoEnemyOne((Texture)enemyOneText,(Texture)trainfire, 600, 600, (TiledMapTileLayer) tiledMap.getLayers().get(1), tcret));
+	
 	renderer=new OrthogonalTiledMapRenderer(tiledMap);
-	player=new OrthoTree(plyr, 700, 700, (TiledMapTileLayer) tiledMap.getLayers().get(1),tcret);
+	player=new OrthoTree(plyr, 700, 1000, (TiledMapTileLayer) tiledMap.getLayers().get(1),tcret);
+	
+	enemy_array.add(new OrthoEnemyOne((Texture)enemyOneText,(Texture)trainfire, 2000, 2800, (TiledMapTileLayer) tiledMap.getLayers().get(1), tcret,player.position));
 	sr=new ShapeRenderer();
+	spiritObject=new SmallFireSpirit(spirit,nexthole,tcret, 2000, 2900, 1,enemy_array.firstElement().getMinions(),enemy_array);
+	boss1=new Crect(800, 1150, 150, 75);
+
 	InputMultiplexer inputMultiplexer = new InputMultiplexer();
 	inputMultiplexer.addProcessor(player);
-	inputMultiplexer.addProcessor(new GestureDetector( player));
+	inputMultiplexer.addProcessor(new GestureDetector(player));
 	Gdx.input.setInputProcessor(inputMultiplexer);
-	
+	FBDesiderObject father=new FBDesiderObject(fathertree, 3, 3, false, 1500, 500, 700, 700);
 	
 	// replace static with animated tile
 	TiledAnimationCreator animator=new TiledAnimationCreator(tiledMap,new String[]{"flow","sflow","flower1"}, "forest_tiles");
 	animator.create();
 	FlowerData fdata=new FlowerData(windflower,(TiledMapTileLayer) tiledMap.getLayers().get("bg"));
-	FBDesiderObject[] fdtemp=fdata.arr;
+	LotusData ldata=new LotusData(lotus, (TiledMapTileLayer) tiledMap.getLayers().get("bg"));
+	stonedate=new StoneWall(stone, (TiledMapTileLayer) tiledMap.getLayers().get("stones"));
+	FBDesiderObject[] result = new FBDesiderObject[fdata.arr.length + ldata.arr.length+1];
+	result[0]=father;
+    System.arraycopy(fdata.arr, 0, result, 1, fdata.arr.length);
+    System.arraycopy(ldata.arr, 0, result, fdata.arr.length+1, ldata.arr.length);
+	FBDesiderObject[] fdtemp=result;
 	System.out.println("size of the array is  "+fdtemp.length+" fdate "+fdata.arr.length);
 	
 	
@@ -144,14 +170,20 @@ public StageThree(final Ancient game)
 //	        renderer.getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 	        renderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get("bg"));
 	        renderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get("stones"));
-	       
+	        renderer.getBatch().draw(tcret, boss1.x, boss1.y, boss1.width, boss1.height);
+	        if(boss1.isCollided(player.position)) {
+	        	System.exit(0);
+	        }
 //	        player.draw(renderer.getBatch(),Gdx.graphics.getDeltaTime());
+	       
 	        for(OrthoEnemyOne enmy : enemy_array) {
 	        	enmy.draw(renderer.getBatch(),Gdx.graphics.getDeltaTime());
 	        }
 //	        renderer.getBatch().setColor(1f, 1f, 1f,1f);
 //	        renderer.getBatch().setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
+	        stonedate.render(renderer.getBatch());
 	      Fbdes.render(renderer.getBatch());
+	      spiritObject.draw(renderer.getBatch(), Gdx.graphics.getDeltaTime());
 	        AnimatedTiledMapTile.updateAnimationBaseTime();
 			renderer.getBatch().end();
 	        if(Gdx.input.isKeyJustPressed(Keys.ENTER)||Gdx.input.isKeyPressed(Input.Keys.BACK))

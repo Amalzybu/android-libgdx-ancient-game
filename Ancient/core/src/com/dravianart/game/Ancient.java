@@ -52,15 +52,15 @@ public class Ancient extends Game {
 //		prefs.putString("tex", "levellightText");
 //		prefs.putString("msc", "levelThreeMsc");
 //		prefs.flush();
-//		prefs.putString("lvl", "StageThree");
-//		prefs.putString("tex", "levelThreeText");
-//		prefs.putString("msc", "levelThreeMsc");
-//		prefs.putString("tmx", "mycrappymap.tmx");
-//		prefs.flush();
-		prefs.putString("lvl", "StageOne");
-		prefs.putString("tex", "leveloneText");
-		prefs.putString("msc", "leveloneMsc");
-		prefs.putString("tmx", "");
+		prefs.putString("lvl", "StageThree");
+		prefs.putString("tex", "levelThreeText");
+		prefs.putString("msc", "levelThreeMsc");
+		prefs.putString("tmx", "mycrappymap.tmx");
+		prefs.flush();
+//		prefs.putString("lvl", "StageOne");
+//		prefs.putString("tex", "leveloneText");
+//		prefs.putString("msc", "leveloneMsc");
+//		prefs.putString("tmx", "");
 //		prefs.flush();
 //		prefs.putString("lvl", "AbyssPath");
 //		prefs.putString("tex", "AbyssText");
@@ -70,7 +70,6 @@ public class Ancient extends Game {
 		System.out.println("pref"+(s=prefs.getString("tex")));
 		if(s.equals(""))
 		{
-			
 			prefs.putString("lvl", "StageOne");
 			prefs.putString("tex", "leveloneText");
 			prefs.putString("msc", "leveloneMsc");
@@ -108,9 +107,9 @@ public class Ancient extends Game {
 		
 		this.lod=new LoadingScreen(this);
 		this.setScreen(lod);
-		//this.setScreen(new MainMenu(this));
-		//this.setScreen(new StageOne(this));
-		//this.setScreen(new TestScreen(this));
+//		this.setScreen(new MainMenu(this));
+//		this.setScreen(new StageOne(this));
+//		this.setScreen(new TestScreen(this));
 		//img = new Texture("badlogic.jpg");
 		if(Gdx.app.getType()==ApplicationType.Android||Gdx.app.getType()==ApplicationType.iOS)IS_Mobile=true;
 	}

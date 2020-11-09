@@ -3,22 +3,22 @@
  <image source="../../../tilesheet_0.png" width="320" height="1568"/>
  <tile id="8">
   <properties>
-   <property name="blocked" value=""/>
+   <property name="blocked" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="9">
   <properties>
-   <property name="blocked" value=""/>
+   <property name="blocked" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="18">
   <properties>
-   <property name="blocked" value=""/>
+   <property name="blocked" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="19">
   <properties>
-   <property name="blocked" value=""/>
+   <property name="blocked" type="bool" value="true"/>
   </properties>
  </tile>
 </tileset>

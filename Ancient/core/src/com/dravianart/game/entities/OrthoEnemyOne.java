@@ -19,49 +19,73 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 
+import tools.Crect;
+import tools.MinionsCollisionDetection;
+
 public class OrthoEnemyOne extends Actor {
 	private TiledMapTileLayer collisionLayer;
 	private Sprite tex,trainfire;
 	private Texture tcret;
+	private Texture enemyOneText;
 	private Vector2 velocity=new Vector2();
 	private Animation[] anm=new Animation[3];
-	private float staticTime;
+	private float staticTime=0,staticGap=2,staticTemp=0;
 	private int anmstatus=2;
 	public float speed=180*2;
 	private float increment;
+	private Crect rect,tree;
+	private boolean activate=false;
 	private Random rand;
 	private Stack<float[]> train=new Stack<float[]>();
-
-	public OrthoEnemyOne(Texture enemyOneText,Texture trainfire,float x,float y,TiledMapTileLayer collisionLayer,Texture tcret) {
-		 rand= new Random();
-		 
+	private Vector<Object> minions=new Vector<Object>();
+	MinionsCollisionDetection collisionDetetct;
+	
+	
+	public OrthoEnemyOne(Texture enemyOneText,Texture trainfire,float x,float y,TiledMapTileLayer collisionLayer,Texture tcret,Crect tree) {
+		this.enemyOneText=enemyOneText;
+		rand= new Random();
+		 this.tree=tree;
 		this.collisionLayer=collisionLayer;
 		tex=new Sprite(enemyOneText);
 		this.trainfire=new Sprite(trainfire);
 		this.tcret=tcret;
+
 		this.setX(x);
 		this.setY(y);
+		rect=new Crect(x+20, y, 75, 50);
 		tex.setBounds(x, y, 500, 500);
 		TextureRegion[][] rollSpriteSheet = TextureRegion.split(tex.getTexture(), 25, 25);
 		TextureRegion[][] trainsprite=TextureRegion.split(this.trainfire.getTexture(), 20, 25);
 		anm[0] = new Animation(0.05f, new Array<TextureRegion>(rollSpriteSheet[0]),PlayMode.LOOP);
 		anm[1] = new Animation(0.05f, new Array<TextureRegion>(trainsprite[0]),PlayMode.LOOP);
 		anm[2] = new Animation(0.05f, new Array<TextureRegion>(trainsprite[1]),PlayMode.LOOP);
+		increment = collisionLayer.getTileWidth();
+		increment = 40 < increment ? 40 / 2 : increment / 2;
 		//anm[1] = new Animation(0.1f, new Array<TextureRegion>(rollSpriteSheet[1]),PlayMode.LOOP);
 		//anm[2] = new Animation(0.1f, new Array<TextureRegion>(rollSpriteSheet[2]),PlayMode.LOOP);
 		//anm[3] = new Animation(0.1f, new Array<TextureRegion>(rollSpriteSheet[3]),PlayMode.LOOP);
 		
-		
+		collisionDetetct=new MinionsCollisionDetection(minions,collisionLayer,tree);
 	}
 	
 	@Override
    public void draw(Batch batch, float alpha){
-//       batch.draw(tex,0,0);
+       batch.draw(tcret,rect.x,rect.y,rect.width,rect.height);
 //		System.out.println("is idle"+idle);
 		 float deviceAngle = Gdx.input.getAccelerometerX();
 		 float deviceAngleY = Gdx.input.getAccelerometerY();
 //		 System.out.println("device angle ="+deviceAngle);
 		staticTime+=alpha;
+		if(staticTime>(staticTemp+staticGap)&&activate) {
+			staticTemp+=staticGap;
+			System.out.println("*****************************************\n*******************************\n****************"+staticTime);
+			minions.add(new OrthoEnemyOneMinion(getX(), getY(), 20, enemyOneText,tcret,collisionLayer,tree));
+		}
+		
+		for(Object omin:minions) {
+			OrthoEnemyOneMinion iomin=(OrthoEnemyOneMinion) omin;
+			iomin.render(batch, alpha);
+		}
 		batch.draw(tcret, getX()+30, getY()+20, 40, 30);
 //		if(train.size()==0)
 //		{
@@ -78,6 +102,9 @@ public class OrthoEnemyOne extends Actor {
 //		for(float[] a:train) {
 //		batch.draw((TextureRegion) anm[1].getKeyFrame(staticTime), a[0], a[1], 80, 100);
 //		}
+		
+
+		
 		if(anmstatus==0)
 		{
 			batch.draw((TextureRegion) anm[0].getKeyFrame(staticTime), getX(), getY(), 100, 100);
@@ -117,6 +144,9 @@ public class OrthoEnemyOne extends Actor {
 			}
 		
 		act(alpha);
+		if(activate) {
+			
+		}
 	
 		}
 		
@@ -124,13 +154,13 @@ public class OrthoEnemyOne extends Actor {
 		
 		@Override
 		   public void act(float delta){
+			if(activate) {
 				float oldX = getX(), oldY = getY();
 				boolean collisionX = false, collisionY = false;
 				setX(getX() + velocity.x * delta);
 
 				// calculate the increment for step in #collidesLeft() and #collidesRight()
-				increment = collisionLayer.getTileWidth();
-				increment = 40 < increment ? 40 / 2 : increment / 2;
+				
 //				System.out.println("is blocked"+isCellBlocked(getX(), getY()));
 				if(velocity.x < 0) // going left
 				{
@@ -146,9 +176,9 @@ public class OrthoEnemyOne extends Actor {
 					
 					setX(oldX);
 					velocity.x = 0;
-					int a=rand.nextInt(4);
-					System.out.println("random number x "+a);
-					anmstatus=a;
+					int dir=rand.nextInt(4);
+//					System.out.println("random number x "+dir);
+					anmstatus=dir;
 				}
 				setY(getY() + velocity.y * delta);
 				if(velocity.y < 0) // going down
@@ -161,12 +191,19 @@ public class OrthoEnemyOne extends Actor {
 				
 					setY(oldY);
 					velocity.y = 0;
-					int a=rand.nextInt(4);
-					System.out.println("random number y "+a);
-					anmstatus=a;
+					int dir=rand.nextInt(4);
+//					System.out.println("random number y "+a);
+					anmstatus=dir;
 				}
-				
-				
+				rect.move(getX()+20, getY());
+			}
+			if(rect.isCollided(tree)) {
+				activate=true;
+				StoneWall.closed=true;
+			}
+			collisionDetetct.collides();
+			
+			
 		   }
 			
 			
@@ -203,6 +240,10 @@ public class OrthoEnemyOne extends Actor {
 					if(isCellBlocked(getX() + step, getY()))
 						return true;
 				return false;
+			}
+			
+			public Vector<Object> getMinions(){
+				return minions;
 			}
 		
    }

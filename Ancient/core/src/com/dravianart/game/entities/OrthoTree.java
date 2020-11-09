@@ -282,7 +282,12 @@ public class OrthoTree extends Actor implements InputProcessor,GestureDetector.G
 
 	private boolean isCellBlocked(float x, float y) {
 		Cell cell = collisionLayer.getCell((int) ((x+30)/ collisionLayer.getTileWidth()), (int) ((y+20) / collisionLayer.getTileHeight()));
-		return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
+		boolean flag=false;
+		if(cell.getTile().getProperties().containsKey("blocked")) {
+		System.out.println("stone wall ************* "+cell.getTile().getProperties().get("blocked"));
+		flag=cell.getTile().getProperties().get("blocked").equals(true);
+		}
+		return cell != null && cell.getTile() != null &&flag;
 	}
 	
 	

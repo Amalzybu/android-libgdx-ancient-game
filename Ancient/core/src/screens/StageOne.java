@@ -86,7 +86,7 @@ public class StageOne implements Screen{
 	{
 		
 		this.game=game;
-		snd = game.manager.get("leveloneMsc/Dunkstein and Slamough - Quad City DJs vs Dark Souls.mp3");
+		snd = game.manager.get("leveloneMsc/1550135_1.mp3");
 		
 		 end=new Examp(6560,130,120,50,(Texture)game.manager.get("leveloneText/cave.png"),4,-50,0,false);
 		 block=game.manager.get("leveloneText/block.png");
@@ -752,7 +752,19 @@ public class StageOne implements Screen{
 		}
 		if(ent.isCollided(t.r))
 		{
-			game.setScreen(new TestScreen(game));
+			game.prefs.putString("lvl", "StageThree");
+			game.prefs.putString("tex", "levelThreeText");
+			game.prefs.putString("msc", "levelThreeMsc");
+			game.prefs.putString("tmx", "mycrappymap.tmx");
+			game.prefs.flush();
+			snd.stop();
+			snd.dispose();
+			game.lod=new LoadingScreen(game);
+			snd.stop();
+			snd.dispose();
+			game.camera.getCam().position.x=240.0f;
+			game.camera.getCam().update();
+			game.setScreen(game.lod);
 		}
 		if(Math.round(t.x)!=game.camera.getCam().position.x-100&&focus)
 		{

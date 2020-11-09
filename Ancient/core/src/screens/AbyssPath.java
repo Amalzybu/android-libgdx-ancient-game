@@ -118,7 +118,7 @@ public class AbyssPath implements Screen{
 			anm=new Animation(0.05f,new Array<TextureRegion>(TextureRegion.split((Texture)game.manager.get("Sprintfog.png"), 350, 65)[0]));
 			blocker=new Vector<Crect>();
 			gr=new Vector<Crect>();
-			bg=new Bglv1(0,0,bt);
+			bg=new Bglv1(-100,0,bt);
 			rv=new River(4660,120,game);
 			Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureListener() {
 
@@ -830,7 +830,7 @@ public class AbyssPath implements Screen{
 				t.update();
 				if(Math.round(t.x)<=game.camera.getCam().position.x-100)
 				{
-					//System.out.println("reset");
+//					System.out.println("reset");
 					focus=false;
 				}
 				
@@ -1043,6 +1043,7 @@ public class AbyssPath implements Screen{
 		}
 		else
 		{
+			
 			cineFocus=false;
 		}
 		return cineFocus;
